@@ -142,17 +142,17 @@ class SilhouetteVisualizer(ClusteringScoreVisualizer):
         self.n_clusters_ = self.estimator.n_clusters
 
         # Compute the scores of the cluster
-        labels = self.estimator.predict(X)
-        self.silhouette_score_ = silhouette_score(X, labels)
-        self.silhouette_samples_ = silhouette_samples(X, labels)
+        self.labels = self.estimator.predict(X)
+        self.silhouette_score_ = silhouette_score(X, self.labels)
+        self.silhouette_samples_ = silhouette_samples(X, self.labels)
 
         # Draw the silhouette figure
-        self.draw(labels)
+        self.draw()
 
         # Return the estimator
         return self
 
-    def draw(self, labels):
+    def draw(self):
         """
         Draw the silhouettes for each sample and the average score.
 
@@ -185,7 +185,7 @@ class SilhouetteVisualizer(ClusteringScoreVisualizer):
         for idx in range(self.n_clusters_):
 
             # Collect silhouette scores for samples in the current cluster .
-            values = self.silhouette_samples_[labels == idx]
+            values = self.silhouette_samples_[self.labels == idx]
             values.sort()
 
             # Compute the size of the cluster and find upper limit
